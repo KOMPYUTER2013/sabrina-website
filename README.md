@@ -39,8 +39,9 @@ ishlatadi; Python bot esa Telegram bilan polling orqali ishlaydi.
 4. Worker’ning **Environment Variables** boʻlimiga quyidagilarni kiriting:
    - `BOT_TOKEN` — `@sabrina_xabar_bot` botining tokeni.
    - `CHAT_ID` — yangi murojaatlar yuboriladigan chat ID.
-   - `ADMIN_TELEGRAM_ID` — admin boʻladigan yagona Telegram foydalanuvchisining
-     raqamli ID’si. Boshqa ID’lar admin menyusini ocholmaydi.
+   - `ADMIN_TELEGRAM_IDS` — admin boʻladigan ikkita Telegram foydalanuvchisining
+     raqamli ID’si, vergul bilan ajratib yoziladi (masalan,
+     `123456789,987654321`). Boshqa ID’lar admin menyusini ocholmaydi.
    - `SITE_API_URL` — Netlify saytining asosiy URL’i, masalan
      `https://sayt-nomi.netlify.app` (oxirida `/` qoʻymang).
    - `ADMIN_API_TOKEN` — Netlify’da kiritilgan ayni maxfiy qiymat.
@@ -48,7 +49,9 @@ ishlatadi; Python bot esa Telegram bilan polling orqali ishlaydi.
 `BOT_TOKEN`ni Python kodiga yozmang. Lokal sinovda repository ildizidagi `.env`
 faylga kiriting; `.env.example` namuna sifatida berilgan va `.env` Git’ga
 qoʻshilmaydi. Hostingda tokenni faqat **Environment Variables / Secrets**
-boʻlimiga kiriting. Bot ishga tushganda eski Telegram webhook’ni olib tashlab,
+boʻlimiga kiriting. Lokal `.env` yoki Render’da `ADMIN_TELEGRAM_IDS` qiymatiga
+ikkita ID’ni vergul bilan yozing, masalan `111111111,222222222` — bo‘shliq
+qo‘ymang. Bot ishga tushganda eski Telegram webhook’ni olib tashlab,
 polling rejimiga oʻtadi. Sayt formasi uchun Netlify’dagi `BOT_TOKEN` ham yangi
 bot tokeni boʻlishi kerak.
 

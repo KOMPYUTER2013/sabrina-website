@@ -24,7 +24,11 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 CHAT_ID = os.getenv("CHAT_ID", "").strip()
 SITE_API_URL = os.getenv("SITE_API_URL", "").strip().rstrip("/")
 ADMIN_API_TOKEN = os.getenv("ADMIN_API_TOKEN", "").strip()
-ADMIN_TELEGRAM_ID = os.getenv("ADMIN_TELEGRAM_ID", "").strip()
+ADMIN_TELEGRAM_IDS = {
+    value.strip()
+    for value in os.getenv("ADMIN_TELEGRAM_IDS", "").split(",")
+    if value.strip()
+}
 API_ENDPOINT = f"{SITE_API_URL}/.netlify/functions/admin"
 MAX_TEXT_LENGTH = 3500
 
@@ -36,7 +40,7 @@ def is_admin(update: Update) -> bool:
         user
         and chat
         and chat.type == "private"
-        and str(user.id) == ADMIN_TELEGRAM_ID
+        and str(user.id) in ADMIN_TELEGRAM_IDS
     )
 
 
@@ -255,13 +259,17 @@ def main() -> None:
         "CHAT_ID": CHAT_ID,
         "SITE_API_URL": SITE_API_URL,
         "ADMIN_API_TOKEN": ADMIN_API_TOKEN,
-        "ADMIN_TELEGRAM_ID": ADMIN_TELEGRAM_ID,
+        "ADMIN_TELEGRAM_IDS": ",".join(ADMIN_TELEGRAM_IDS),
     }
     missing = [key for key, value in required.items() if not value]
     if missing:
         raise SystemExit(f"Quyidagi environment variable’larni sozlang: {', '.join(missing)}")
-    if not ADMIN_TELEGRAM_ID.isdigit():
-        raise SystemExit("ADMIN_TELEGRAM_ID raqamli Telegram ID boʻlishi kerak.")
+    if len(ADMIN_TELEGRAM_IDS) != 2 or not all(
+        admin_id.isdigit() for admin_id in ADMIN_TELEGRAM_IDS
+    ):
+        raise SystemExit(
+            "ADMIN_TELEGRAM_IDS vergul bilan ajratilgan ikkita raqamli Telegram ID boʻlishi kerak."
+        )
     if not SITE_API_URL.startswith("https://"):
         raise SystemExit("SITE_API_URL HTTPS manzil boʻlishi kerak.")
 
