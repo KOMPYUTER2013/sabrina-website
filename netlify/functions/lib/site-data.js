@@ -1,7 +1,13 @@
-import { getStore } from "@netlify/blobs";
+import { connectLambda, getStore } from "@netlify/blobs";
 import { defaultContent } from "../../../src/site-content.js";
 
-export const store = getStore("sabrina-site-data");
+export let store;
+
+export function initializeStore(event) {
+  connectLambda(event);
+  store = getStore("sabrina-site-data");
+  return store;
+}
 
 export async function getContent() {
   const savedContent = await store.get("content", { type: "json" });

@@ -1,4 +1,4 @@
-import { getContent } from "./lib/site-data.js";
+import { getContent, initializeStore } from "./lib/site-data.js";
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -15,6 +15,7 @@ export const handler = async (event) => {
   }
 
   try {
+    initializeStore(event);
     return json(200, await getContent());
   } catch (error) {
     console.error("Sayt matnlarini olishda xato:", error);

@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { contentSections } from "../../src/site-content.js";
-import { getTrafficStats, getContent, store } from "./lib/site-data.js";
+import { getTrafficStats, getContent, initializeStore } from "./lib/site-data.js";
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -37,6 +37,7 @@ export const handler = async (event) => {
   }
 
   try {
+    const store = initializeStore(event);
     if (event.httpMethod === "GET") {
       const resource = event.queryStringParameters?.resource;
       if (resource === "fields") {

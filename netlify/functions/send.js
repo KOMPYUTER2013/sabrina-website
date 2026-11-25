@@ -1,4 +1,4 @@
-import { getContent } from "./lib/site-data.js";
+import { getContent, initializeStore } from "./lib/site-data.js";
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -41,6 +41,7 @@ export const handler = async (event) => {
   }
   let allowedTopics;
   try {
+    initializeStore(event);
     const content = await getContent();
     allowedTopics = content.contact.topicOptions;
   } catch (error) {

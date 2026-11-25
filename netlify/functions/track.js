@@ -1,4 +1,4 @@
-import { store } from "./lib/site-data.js";
+import { initializeStore } from "./lib/site-data.js";
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -30,6 +30,7 @@ export const handler = async (event) => {
   const date = new Date(now).toISOString().slice(0, 10);
 
   try {
+    const store = initializeStore(event);
     const visitorKey = `visitors/${visitorId}`;
     const existing = await store.get(visitorKey);
     if (!existing) {
